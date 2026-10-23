@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pendaftaran HMC</title>
+<style>
+:root{--bg:#080d12;--panel:#111b23;--line:#2a3b46;--text:#edf4f7;--muted:#9db0bb;--accent:#b8d66b;--accent2:#6e8e3b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#1c2b31 0,#080d12 55%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{padding:26px 18px 12px;text-align:center}.badge{display:inline-block;border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:5px 12px;font-size:12px;letter-spacing:2px}
+h1{margin:12px 0 4px;letter-spacing:3px;font-size:clamp(28px,7vw,42px)}header p{margin:0;color:var(--muted)}
+main{max-width:680px;margin:16px auto 42px;padding:0 14px}.card{background:rgba(17,27,35,.96);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 14px 40px #0005}
+.progress-wrap{height:6px;background:#24313a;border-radius:10px;overflow:hidden;margin-bottom:18px}.progress{height:100%;width:20%;background:var(--accent);transition:width .2s}
+.step{display:none}.step.active{display:block}.stepno{color:var(--accent);font-size:12px;letter-spacing:2px;font-weight:700}h2{margin:7px 0 8px;font-size:23px}.hint{color:var(--muted);font-size:14px;margin:0 0 18px}
+label{display:block;font-size:14px;margin:14px 0 7px;color:#dbe6eb}input,select,textarea{width:100%;padding:12px 13px;border-radius:10px;border:1px solid #354955;background:#0b1319;color:var(--text);font:inherit}textarea{min-height:95px;resize:vertical}input:focus,select:focus,textarea:focus{outline:2px solid #7c9d48;border-color:transparent}
+.option{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:10px;margin:9px 0;background:#0b1319}.option input{width:auto;margin-top:4px}.option label{margin:0;flex:1;cursor:pointer}
+.buttons{display:flex;gap:10px;margin-top:22px}.buttons button{flex:1;border:0;border-radius:10px;padding:13px;font-weight:750;font-size:15px;cursor:pointer}.back{background:#263640;color:var(--text)}.next,.submit{background:var(--accent);color:#121a0b}.next:disabled,.submit:disabled{opacity:.55;cursor:wait}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:16px}.status{display:none;margin-top:14px;padding:12px;border-radius:10px;line-height:1.5}.status.error{display:block;background:#482327;color:#ffe4e4}.status.success{display:block;background:#1c3c2c;color:#d8ffe6}
+footer{text-align:center;color:#718792;font-size:12px;padding:0 15px 25px}
+</style>
+</head>
+<body>
+<header><div class="badge">HISTORY • MILITARY • COMMUNITY</div><h1>HMC</h1><p>FORMULIR PENDAFTARAN ANGGOTA</p></header>
+<main><form class="card" id="form">
+<div class="progress-wrap"><div class="progress" id="progress"></div></div>
+<section class="step active">
+<div class="stepno">TAHAP 01 / 05</div><h2>Identitas anggota</h2><p class="hint">Isi data dasar dengan benar.</p>
+<label for="full_name">Nama lengkap / nama panggilan *</label><input id="full_name" name="full_name" required maxlength="80" autocomplete="name">
+<label for="age">Umur *</label><input id="age" name="age" type="number" min="13" max="100" required>
+<label for="gender">Jenis kelamin *</label><select id="gender" name="gender" required><option value="">Pilih...</option><option>Laki-laki</option><option>Perempuan</option><option>Tidak ingin menyebutkan</option></select>
+<label for="city">Kota atau wilayah *</label><input id="city" name="city" required maxlength="100">
+</section>
+<section class="step">
+<div class="stepno">TAHAP 02 / 05</div><h2>Akun TikTok</h2><p class="hint">Masukkan username, bukan kata sandi. Jangan pernah memberikan password akun.</p>
+<label for="tiktok_username">Username TikTok *</label><input id="tiktok_username" name="tiktok_username" placeholder="@username" required maxlength="80">
+<label for="tiktok_followers">Jumlah pengikut (perkiraan)</label><input id="tiktok_followers" name="tiktok_followers" type="number" min="0" max="1000000000" value="0">
+<label for="military_interest">Topik militer yang paling diminati *</label><select id="military_interest" name="military_interest" required><option value="">Pilih topik...</option><option>Sejarah perang dunia</option><option>Kendaraan darat dan tank</option><option>Kapal perang dan angkatan laut</option><option>Pesawat militer dan penerbangan</option><option>Sejarah militer kuno</option><option>Teknologi dan strategi militer (sejarah)</option></select>
+<label for="reason_to_join">Mengapa ingin bergabung dengan HMC? *</label><textarea id="reason_to_join" name="reason_to_join" required maxlength="1000"></textarea>
+</section>
+<section class="step">
+<div class="stepno">TAHAP 03 / 05</div><h2>Tes pengetahuan dunia</h2><p class="hint">5 soal singkat. Pilih satu jawaban untuk tiap soal.</p>
+<div id="quiz"></div>
+</section>
+<section class="step">
+<div class="stepno">TAHAP 04 / 05</div><h2>Kontribusi komunitas</h2><p class="hint">Beri tahu kami bagaimana kamu ingin ikut berkontribusi.</p>
+<label for="contribution">Apa yang ingin kamu bagikan kepada komunitas? *</label><textarea id="contribution" name="contribution" required maxlength="1000" placeholder="Contoh: video sejarah, ilustrasi kendaraan, fakta militer..."></textarea>
+<label class="option"><input id="agree" type="checkbox" required><span>Saya menyatakan data yang saya isi benar dan bersedia mengikuti aturan komunitas HMC.</span></label>
+</section>
+<section class="step">
+<div class="stepno">TAHAP 05 / 05</div><h2>Periksa dan kirim</h2><p class="hint">Setelah dikirim, pendaftaran menunggu pemeriksaan admin. Jangan mengirim informasi rahasia.</p>
+<div id="review"></div>
+</section>
+<div class="buttons"><button type="button" class="back" id="back" hidden>Kembali</button><button type="button" class="next" id="next">Lanjut</button><button type="submit" class="submit" id="submit" hidden>Kirim pendaftaran</button></div>
+<div class="status" id="status" role="status"></div>
+<p class="note">HMC • History Military Creator. Pengiriman ini memerlukan konfigurasi Supabase oleh pemilik website. Jangan menaruh password database atau service-role key di file ini.</p>
+</form></main><footer>HMC • Belajar sejarah militer dunia dengan bertanggung jawab</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* SETELAH membuat tabel dan policy, isi dua nilai berikut dari Supabase > Project Settings > API.
+   Gunakan Project URL dan anon/public key saja. JANGAN gunakan service_role key. */
+const SUPABASE_URL = "PASTE_PROJECT_URL_HERE";
+const SUPABASE_ANON_KEY = "PASTE_ANON_PUBLIC_KEY_HERE";
+const TABLE_NAME = "hmc_registrations";
+
+const questions = [
+ {q:"Tahun berapa Perang Dunia II berakhir?", options:["1918","1939","1945","1955"], answer:"1945"},
+ {q:"Kapal perang terkenal yang menjadi simbol penyerahan Jepang pada 1945 adalah USS ...", options:["Enterprise","Missouri","Constitution","Arizona"], answer:"Missouri"},
+ {q:"Tembok Atlantik dibangun terutama oleh Jerman Nazi untuk pertahanan di wilayah ...", options:["Eropa Barat yang menghadap laut","Afrika Selatan","Amerika Selatan","Asia Timur"], answer:"Eropa Barat yang menghadap laut"},
+ {q:"Kendaraan tempur lapis baja yang bergerak menggunakan rantai dan memiliki meriam utama disebut ...", options:["Kapal selam","Tank","Helikopter angkut","Kapal induk"], answer:"Tank"},
+ {q:"Pertempuran Midway pada 1942 terutama berlangsung di ...", options:["Samudra Pasifik","Laut Baltik","Laut Mediterania","Samudra Arktik"], answer:"Samudra Pasifik"}
+];
+const quiz=document.getElementById("quiz");
+questions.forEach((q,i)=>{const box=document.createElement("div");box.innerHTML=`<label>${i+1}. ${q.q} *</label>`+q.options.map((o,j)=>`<div class="option"><input type="radio" id="q${i}_${j}" name="q${i}" value="${o}" required><label for="q${i}_${j}">${o}</label></div>`).join("");quiz.appendChild(box)});
+const steps=[...document.querySelectorAll(".step")], progress=document.getElementById("progress"), back=document.getElementById("back"), next=document.getElementById("next"), submit=document.getElementById("submit"), statusBox=document.getElementById("status");
+let current=0;
+function showStep(n){current=n;steps.forEach((s,i)=>s.classList.toggle("active",i===n));progress.style.width=((n+1)/steps.length*100)+"%";back.hidden=n===0;next.hidden=n===steps.length-1;submit.hidden=n!==steps.length-1;statusBox.className="status";statusBox.textContent="";if(n===steps.length-1)buildReview();window.scrollTo({top:0,behavior:"smooth"})}
+function validStep(){const fields=[...steps[current].querySelectorAll("input,select,textarea")].filter(x=>x.type!=="radio"&&x.type!=="checkbox");for(const f of fields){if(!f.checkValidity()){f.reportValidity();return false}}if(current===2){for(let i=0;i<questions.length;i++){if(!document.querySelector(`input[name="q${i}"]:checked`)){alert("Jawab soal nomor "+(i+1)+" dulu ya.");return false}}}if(current===3&&!document.getElementById("agree").checked){alert("Centang persetujuan dulu.");return false}return true}
+function buildReview(){const f=document.getElementById("form");const v=id=>f.elements[id]?.value||"";document.getElementById("review").innerHTML=`<div class="option"><span><b>Nama:</b> ${escapeHtml(v("full_name"))}<br><b>Wilayah:</b> ${escapeHtml(v("city"))}<br><b>TikTok:</b> ${escapeHtml(v("tiktok_username"))}<br><b>Topik:</b> ${escapeHtml(v("military_interest"))}</span></div><p class="hint">Skor tes dihitung otomatis ketika dikirim. Status awal: menunggu pemeriksaan.</p>`}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+next.addEventListener("click",()=>{if(validStep())showStep(Math.min(current+1,steps.length-1))});back.addEventListener("click",()=>showStep(Math.max(0,current-1)));
+document.getElementById("form").addEventListener("submit",async e=>{e.preventDefault();if(!validStep())return;statusBox.className="status";statusBox.textContent="";
+ if(SUPABASE_URL.includes("PASTE_")||SUPABASE_ANON_KEY.includes("PASTE_")){statusBox.className="status error";statusBox.textContent="Belum terhubung: isi SUPABASE_URL dan SUPABASE_ANON_KEY di kode website terlebih dahulu.";return}
+ if(!window.supabase){statusBox.className="status error";statusBox.textContent="Library Supabase gagal dimuat. Periksa koneksi internet lalu coba lagi.";return}
+ submit.disabled=true;submit.textContent="Mengirim...";
+ try{
+ const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+ const form=e.currentTarget;const get=name=>form.elements[name]?.value||"";
+ const score=questions.reduce((sum,q,i)=>sum+(document.querySelector(`input[name="q${i}"]:checked`)?.value===q.answer?1:0),0);
+ const payload={full_name:get("full_name").trim(),age:Number(get("age")),gender:get("gender"),city:get("city").trim(),tiktok_username:get("tiktok_username").trim(),tiktok_followers:Number(get("tiktok_followers")||0),reason_to_join:get("reason_to_join").trim(),military_interest:get("military_interest"),quiz_score:score,status:"pending"};
+ const {error}=await client.from(TABLE_NAME).insert(payload);
+ if(error)throw error;
+ form.reset();showStep(0);statusBox.className="status success";statusBox.textContent=`Pendaftaran terkirim! Skor tes kamu ${score}/5. Status saat ini: MENUNGGU PEMERIKSAAN ADMIN. Simpan informasi ini untuk referensi.`;
+ }catch(err){statusBox.className="status error";statusBox.textContent="Pendaftaran belum berhasil dikirim. Periksa konfigurasi tabel/policy Supabase. Pesan: "+(err.message||"Kesalahan tidak diketahui")}
+ finally{submit.disabled=false;submit.textContent="Kirim pendaftaran"}
+});
+</script></body></html>
